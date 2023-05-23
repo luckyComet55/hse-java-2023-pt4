@@ -4,6 +4,7 @@ import java.util.PriorityQueue;
 public class ElevatorController implements Runnable {
   
   private final Elevator elevator;
+  private final IOHelper io = new IOHelper();
   private final PriorityQueue<Task> onExecution;
   public ElevatorController(Elevator elevator) {
     this.elevator = elevator;
@@ -32,7 +33,7 @@ public class ElevatorController implements Runnable {
         }
         if (elevator.getCurrentFloor() == Math.abs(onExecution.peek().getTargetFloor())) {
           Task t = onExecution.peek();
-          System.out.println("Elevator " + elevator.getName() + " released task from floor " + t.getCalledFromFloor() + " at floor " + t.getTargetFloor());
+          io.printElevatorTaskRelease(elevator, t);
           onExecution.poll();
         }
       }
@@ -43,6 +44,7 @@ public class ElevatorController implements Runnable {
     try {
       Thread.sleep(3000);
       elevator.updateFloor();
+      io.printElevatorStatus(elevator);
     } catch (InterruptedException e) {
       System.out.println("Exception at elevator " + elevator.getName() + ", message: " + e.getMessage());
     }
@@ -59,5 +61,18 @@ public class ElevatorController implements Runnable {
   
   public Elevator getElevator() {
     return elevator;
+  }
+  
+  public int getTasksSize() {
+    return onExecution.size();
+  }
+  
+  public boolean ableToPickTask(Task t) {
+    synchronized (onExecution) {
+      if (onExecution.isEmpty()) return true;
+    }
+    if (t.isDirectionUp() && elevator.getDirection() && t.getCalledFromFloor() <= elevator.getCurrentFloor()) return true;
+    if (!t.isDirectionUp() && !elevator.getDirection() && t.getCalledFromFloor() >= elevator.getCurrentFloor()) return true;
+    return false;
   }
 }
