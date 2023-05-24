@@ -1,6 +1,9 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Класс для ввода-вывода информации по лифту и задачам
+ */
 public class IOHelper {
   
   private Scanner in;

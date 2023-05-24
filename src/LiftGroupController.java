@@ -1,8 +1,15 @@
 import java.util.ArrayList;
 
+/**
+ * Класс контроллер группы из двух лифтов
+ * Обрабатывает запросы на этажи, распределяет между лифтами
+ * Запросы, которые не являются попутными (а по этому критерию распределяются задачи),
+ * сохраняются в массив
+ */
 public class LiftGroupController implements Runnable {
   
-  private ElevatorController l1, l2;
+  private final ElevatorController l1;
+  private final ElevatorController l2;
   private final int maxFloor = 18;
   private final IOHelper io = new IOHelper();
   private final ArrayList<Task> onAwait = new ArrayList<>();
@@ -12,6 +19,11 @@ public class LiftGroupController implements Runnable {
     l2 = new ElevatorController(new Elevator("L2", maxFloor));
   }
   
+  /**
+   * Поток обработки запросов по путешествию меж этажами
+   * Проверяет корректность введённых значений, пытается добавить
+   * задачи по лифтам. Если не выходит, сохраняет к себе
+   */
   @Override
   public void run() {
     Thread t1 = new Thread(l1);
@@ -40,6 +52,12 @@ public class LiftGroupController implements Runnable {
     
   }
   
+  /**
+   * Проверка того, возможно ли текущую задачу добавить какому-либо
+   * из лифтов
+   * @param t задача, объект класса Task
+   * @return если задача может быть отдана лифту на исполнение, она отдаётся и возвращается true
+   */
   private boolean tryAddTask(Task t) {
     if (l1.ableToPickTask(t) && l2.ableToPickTask(t)) {
       if (Math.abs(l1.getElevator().getCurrentFloor() - t.getCalledFromFloor()) <= Math.abs(l2.getElevator().getCurrentFloor() - t.getCalledFromFloor())) {

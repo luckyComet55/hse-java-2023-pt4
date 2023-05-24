@@ -1,3 +1,8 @@
+/**
+ * Класс задачи
+ * Задача имеет этаж получения
+ * и этаж назначения, а также направление движения.
+ */
 public class Task {
   private final boolean directionUp;
   private int targetFloor;
