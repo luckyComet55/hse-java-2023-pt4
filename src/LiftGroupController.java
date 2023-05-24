@@ -24,6 +24,7 @@ public class LiftGroupController implements Runnable {
       Task t = io.inputTask();
       if (t.getCalledFromFloor() < 1 || t.getCalledFromFloor() > maxFloor || t.getTargetFloor() < 1 || t.getTargetFloor() > maxFloor) {
         System.out.println("Неверные номера этажей");
+        continue;
       }
       if (t.getTargetFloor() == t.getCalledFromFloor()) {
         System.out.println("Так можно и пешком добраться");
@@ -43,19 +44,19 @@ public class LiftGroupController implements Runnable {
     if (l1.ableToPickTask(t) && l2.ableToPickTask(t)) {
       if (Math.abs(l1.getElevator().getCurrentFloor() - t.getCalledFromFloor()) <= Math.abs(l2.getElevator().getCurrentFloor() - t.getCalledFromFloor())) {
         l1.addTask(t);
-        io.printElevatorTaskAcquire(l1.getElevator(), t);
+        io.printElevatorTaskTarget(l1.getElevator(), t);
       } else {
         l2.addTask(t);
-        io.printElevatorTaskAcquire(l2.getElevator(), t);
+        io.printElevatorTaskTarget(l2.getElevator(), t);
       }
       return true;
     } else if (l1.ableToPickTask(t)) {
       l1.addTask(t);
-      io.printElevatorTaskAcquire(l1.getElevator(), t);
+      io.printElevatorTaskTarget(l1.getElevator(), t);
       return true;
     } else if (l2.ableToPickTask(t)) {
       l2.addTask(t);
-      io.printElevatorTaskAcquire(l2.getElevator(), t);
+      io.printElevatorTaskTarget(l2.getElevator(), t);
       return true;
     }
     return false;

@@ -1,7 +1,7 @@
 public class Task {
   private final boolean directionUp;
-  private final int targetFloor;
-  private final int calledFromFloor;
+  private int targetFloor;
+  private int calledFromFloor;
   
   public Task (int calledFromFloor, int targetFloor) {
     this.directionUp = calledFromFloor < targetFloor;
@@ -19,5 +19,13 @@ public class Task {
   
   public int getCalledFromFloor() {
     return calledFromFloor;
+  }
+  
+  public void setTargetOpposite() {
+    targetFloor = -targetFloor;
+  }
+  
+  public void setCalledOpposite() {
+    calledFromFloor = -calledFromFloor;
   }
 }

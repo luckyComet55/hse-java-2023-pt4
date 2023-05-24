@@ -33,11 +33,15 @@ public class IOHelper {
   }
   
   public void printElevatorTaskRelease(Elevator elevator, Task task) {
-    System.out.format("%s dropped %d-%d\n", elevator.getName(), task.getCalledFromFloor(), task.getTargetFloor());
+    System.out.format("%s dropped %d-%d\n", elevator.getName(), Math.abs(task.getCalledFromFloor()), Math.abs(task.getTargetFloor()));
   }
   
   public void printElevatorTaskAcquire(Elevator elevator, Task task) {
-    System.out.format("%s picked %d-%d\n", elevator.getName(), task.getCalledFromFloor(), task.getTargetFloor());
+    System.out.format("%s picked %d-%d\n", elevator.getName(), Math.abs(task.getCalledFromFloor()), task.getTargetFloor());
+  }
+  
+  public void printElevatorTaskTarget(Elevator elevator, Task task) {
+    System.out.format("%s locked on %d-%d", elevator.getName(), task.getCalledFromFloor(), task.getTargetFloor());
   }
   
   public void printTaskQueued(Task t) {
